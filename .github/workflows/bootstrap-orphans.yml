@@ -1,9 +1,0 @@
-name: Bootstrap orphan workspaces
-on: push
-permissions:
-  contents: write
-jobs:
-  selfcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "actions-ready"
