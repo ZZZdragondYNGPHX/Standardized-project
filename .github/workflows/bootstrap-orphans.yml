@@ -2,15 +2,15 @@ name: Bootstrap orphan workspaces
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - .github/workflows/bootstrap-orphans.yml
 
 permissions:
   contents: write
 
 jobs:
   orphanize:
-    if: github.event.head_commit.message == 'chore: bootstrap orphan workspaces'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
