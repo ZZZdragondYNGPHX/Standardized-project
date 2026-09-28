@@ -1,0 +1,44 @@
+name: Bootstrap orphan workspaces
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  orphanize:
+    if: github.event.head_commit.message == 'chore: bootstrap orphan workspaces'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Rewrite long-lived workspaces as independent roots
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for branch in docs package plugin skills; do
+            tmp="$(mktemp -d)"
+            git archive "origin/${branch}" | tar -x -C "$tmp"
+
+            git switch --detach origin/main
+            git switch --orphan "__orphan_${branch}"
+            git rm -rf . >/dev/null 2>&1 || true
+            find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+            cp -a "$tmp"/. .
+            rm -rf "$tmp"
+
+            git add -A
+            git commit -m "chore: initialize ${branch} as independent workspace"
+            git push --force origin "HEAD:refs/heads/${branch}"
+
+            git switch --detach origin/main
+            git branch -D "__orphan_${branch}" || true
+          done
