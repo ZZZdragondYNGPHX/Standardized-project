@@ -9,7 +9,8 @@
 - Current branch/workspace:
 - Current HEAD:
 - Current stage:
-- Plan:
+- Plan entrypoint:
+- Stage-required Plan modules:
 - Record:
 
 ## Completed
@@ -42,4 +43,4 @@
 
 ## New-chat bootstrap prompt
 
-Replace this section with a concise prompt containing repository, task, branch/HEAD, Plan/Record/HANDOFF paths, completed work, validation state, next target, files to read first, and work not to repeat.
+Replace this section with a concise prompt containing repository, task, branch/HEAD, Plan entrypoint, stage-required Plan modules, Record/HANDOFF paths, completed work, validation state, next target, files to read first, and work not to repeat.
