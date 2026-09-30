@@ -15,7 +15,7 @@ This workspace is the stable product/source line.
 
 Load only the context required by the current task.
 
-- Existing multi-stage/resumed task: read the relevant HANDOFF, Plan, and Record.
+- Existing multi-stage/resumed task: read HANDOFF, then the Plan entrypoint. If it is a Plan Bundle, read `index.md` first and only the modules required by the current stage; then read the relevant Record.
 - New ordinary task: start from this file and relevant source files; do not scan all docs/history.
 - User/Plan explicitly names a Skill: read `skills:SKILLS.md`, then only that Skill.
 - Governance-sensitive operation: read `docs:README.md`.
