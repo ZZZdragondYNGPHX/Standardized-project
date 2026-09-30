@@ -13,4 +13,6 @@ This workspace contains game/Package assets, not the product source tree.
 - Prefer local Git, filesystem tools, local package validation, and local test/runtime tooling.
 - Protect unrelated dirty changes.
 
-For resumed/multi-stage work, read only the relevant HANDOFF, package Plan, and package Record. Read `docs:README.md` for governance-sensitive operations.
+For resumed/multi-stage work, read HANDOFF, then the package Plan entrypoint. If it is a Plan Bundle, read `index.md` first and only the modules required by the current stage; then read the relevant package Record.
+
+Read `docs:README.md` for governance-sensitive operations.
