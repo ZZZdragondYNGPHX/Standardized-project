@@ -1,4 +1,6 @@
-# <Task> — Plan
+# <Task> — Single-file Plan
+
+> Use this template for compact plans. If the Plan grows large enough that stages should load only selected modules, convert it to a Plan Bundle using `templates/PLAN-BUNDLE/`.
 
 - Task ID:
 - Primary Workspace:
