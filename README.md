@@ -1,6 +1,6 @@
 # Repository Governance
 
-**Governance version: 1.0**
+**Governance version: 1.1**
 
 This branch is the authoritative repository-governance workspace. These rules describe the required repository state and lifecycle independently of whether work is performed by a web agent, desktop agent, Codex CLI, Claude Code, or a human.
 
@@ -96,9 +96,9 @@ Long-lived AI Skill asset workspace.
 
 ## 3. Independent long-lived workspaces
 
-`docs`, `package`, `plugin`, and `skills` are logically independent long-lived workspaces and should be created/migrated as orphan/independent-root branches when local Git can do so.
+`docs`, `package`, `plugin`, and `skills` are logically independent long-lived workspaces and should be created/migrated as orphan/independent-root branches.
 
-This template repository was initialized through a remote GitHub connector that cannot create parentless commits, so these example branches share only the initial bootstrap ancestry with `main`. Their current file trees and future responsibilities are isolated. When applying this standard with local Git, create true orphan roots for these long-lived workspaces.
+In this template repository, `docs`, `package`, `plugin`, and `skills` are true parentless root branches. Applying repositories should preserve the same isolation rather than creating them by merging or copying the full `main` history.
 
 ## 4. Task identity and ownership
 
@@ -125,11 +125,41 @@ Suggested organization:
 - `plans/plugin/`
 - `plans/architecture/`
 
+### Single-file Plan
+
+Small or medium tasks may use one file:
+
+```text
+plans/feat/custom-start-form.md
+```
+
+### Plan Bundle
+
+Large projects or plans that become too large for efficient stage-by-stage reading should use a directory:
+
+```text
+plans/package/example-project/
+├─ index.md
+├─ decisions.md
+├─ nation.md
+├─ religion.md
+├─ economy.md
+└─ ui.md
+```
+
+`index.md` is the single entrypoint and routing document. It should contain the project goal, frozen core principles, module map/dependencies, stage map, current design status, and—most importantly—which module documents each stage must read.
+
+Module documents are authoritative only for their own domain. Do not duplicate the same detailed rule across multiple modules; choose one authority and link to it from dependent modules.
+
+`decisions.md` is optional and stores frozen cross-module decisions that future agents must not casually reopen.
+
 Rules:
 
 - Small/local tasks may proceed without a formal Plan.
 - Larger features, refactors, architecture work, complex packages/plugins, or tasks explicitly discussed before implementation should have a Plan.
-- Update a Plan when the approved design materially changes; do not churn it for ordinary implementation details.
+- Use a Plan Bundle when a single Plan becomes large enough that agents should not load it in full for every stage.
+- For a Plan Bundle, read `index.md` first and then only the modules required by the current stage.
+- Update only modules whose approved design materially changes; update `index.md` when routing, dependencies, stage mapping, or frozen cross-module decisions change.
 - Plans are environment-neutral. They describe what and why, not a client-specific Git/API procedure.
 
 ## 6. Records
@@ -168,7 +198,7 @@ Rules:
 
 - There is at most one live repository-level `HANDOFF.md`.
 - Once it exists, every actual work round must keep it current.
-- It records the current task, Primary Workspace, branch/HEAD, current stage, completed/pending work, validation state, key decisions, files to read next, and what must not be repeated.
+- It records the current task, Primary Workspace, branch/HEAD, current stage, completed/pending work, validation state, key decisions, the Plan entrypoint plus stage-required Plan modules, files to read next, and what must not be repeated.
 - It may include a new-chat bootstrap prompt, but that prompt is a hint, not a substitute for repository verification.
 - Delete `HANDOFF.md` when the task finishes.
 - No live task exists in this template repository, so `HANDOFF.md` is intentionally absent.
@@ -219,13 +249,13 @@ Context is loaded by task need, not by startup ritual.
 Default progression:
 
 - Level 0: user request + branch-local `AGENTS.md` or Web hot-path rules.
-- Level 1: relevant Plan and HANDOFF when the task requires them.
+- Level 1: relevant Plan entrypoint and HANDOFF when the task requires them. For a Plan Bundle, load `index.md` first, then only the stage-required modules.
 - Level 2: relevant Record/history for resumed or dependency-sensitive work.
 - Level 3: full Governance, explicitly selected Skill, or explicitly authorized reference branch.
 
 Rules:
 
-- Do not scan all Plans, Records, Skills, or reference branches “just in case.”
+- Do not scan all Plans, Plan Bundle modules, Records, Skills, or reference branches “just in case.”
 - Search is for locating relevant material; search results do not imply full-document loading.
 - Every loaded Plan/Record/HANDOFF/Skill/reference should have a direct relationship to the current task.
 - A user-provided handoff prompt is a bootstrap hint; verify current Git state and the named authoritative documents.
