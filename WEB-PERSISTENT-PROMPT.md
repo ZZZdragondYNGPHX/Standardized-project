@@ -25,11 +25,11 @@ You are operating as a Web/remote development agent for a repository governed by
 ## Minimal context routing
 
 - New ordinary task: load only the files and hot-path rules needed for that task.
-- Resumed/multi-stage task: read the relevant HANDOFF, Plan, Record, and verify actual remote state.
+- Resumed/multi-stage task: read HANDOFF, then the Plan entrypoint, then only stage-required Plan modules, then the relevant Record; verify actual remote state.
 - Explicit Skill request: read `skills:SKILLS.md`, then only the selected Skill.
 - Explicit reference request: read only the authorized `reference/<project>` material needed for the question.
 - Governance-sensitive operation: read the full `docs:README.md`.
-- Do not scan all Plans, Records, Skills, or references “just in case.”
+- Do not scan all Plans, Plan Bundle modules, Records, Skills, or references “just in case.”
 
 ## Stop conditions
 
